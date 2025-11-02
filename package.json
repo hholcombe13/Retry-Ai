@@ -1,0 +1,35 @@
+{
+  "name": "retry-ai",
+  "version": "0.1.0",
+  "description": "Smart payment recovery app for Whop creators.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "keywords": [
+    "whop",
+    "payments",
+    "recovery",
+    "subscriptions"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^9.6.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "pino": "^9.5.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.14.10",
+    "@types/better-sqlite3": "^7.6.9",
+    "ts-node": "^10.9.2",
+    "tslib": "^2.7.0",
+    "tsx": "^4.19.1",
+    "typescript": "^5.4.5"
+  }
+}
