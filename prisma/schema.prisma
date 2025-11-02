@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Creator {
+  id        String    @id @default(cuid())
+  name      String
+  email     String?
+  payments  Payment[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Customer {
+  id            String    @id @default(cuid())
+  email         String?
+  name          String?
+  discordUserId String?
+  payments      Payment[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Payment {
+  id               String            @id @default(cuid())
+  stripeInvoiceId  String            @unique
+  stripeCustomerId String?
+  creatorId        String?
+  creator          Creator?          @relation(fields: [creatorId], references: [id], onDelete: SetNull)
+  customerId       String?
+  customer         Customer?         @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  amountCents      Int
+  currency         String
+  status           PaymentStatus
+  failureCode      String?
+  failureMessage   String?
+  recoveredAt      DateTime?
+  retriedCount     Int               @default(0)
+  metadata         Json?
+  events           PaymentEvent[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+}
+
+model PaymentEvent {
+  id              String            @id @default(cuid())
+  paymentId       String
+  payment         Payment           @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  type            PaymentEventType
+  externalEventId String?
+  metadata        Json?
+  createdAt       DateTime          @default(now())
+}
+
+enum PaymentStatus {
+  FAILED
+  RECOVERED
+  RETRYING
+  PENDING
+}
+
+enum PaymentEventType {
+  STRIPE_PAYMENT_FAILED
+  STRIPE_PAYMENT_SUCCEEDED
+  DISCORD_DM
+  RETRY_ATTEMPT
+  FOLLOW_UP_NOTE
+}

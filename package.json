@@ -1,12 +1,20 @@
 {
   "name": "retry-ai",
+  "private": true,
   "version": "0.1.0",
   "description": "Smart payment recovery app for Whop creators.",
-  "main": "dist/index.js",
+  "workspaces": [
+    "apps/web",
+    "apps/server"
+  ],
   "scripts": {
-    "build": "tsc",
-    "dev": "tsx watch src/index.ts",
-    "start": "node dist/index.js"
+    "dev": "concurrently \"npm run dev --workspace apps/web\" \"npm run dev --workspace apps/server\"",
+    "dev:web": "npm run dev --workspace apps/web",
+    "dev:server": "npm run dev --workspace apps/server",
+    "build": "npm run build --workspace apps/web && npm run build --workspace apps/server",
+    "lint": "npm run lint --workspace apps/web",
+    "prisma:generate": "npm run prisma:generate --workspace apps/server",
+    "prisma:migrate": "npm run prisma:migrate --workspace apps/server"
   },
   "keywords": [
     "whop",
@@ -16,20 +24,9 @@
   ],
   "author": "",
   "license": "MIT",
-  "dependencies": {
-    "better-sqlite3": "^9.6.0",
-    "dotenv": "^16.4.5",
-    "express": "^4.21.2",
-    "pino": "^9.5.0",
-    "zod": "^3.23.8"
-  },
   "devDependencies": {
-    "@types/express": "^4.17.21",
-    "@types/node": "^20.14.10",
-    "@types/better-sqlite3": "^7.6.9",
-    "ts-node": "^10.9.2",
-    "tslib": "^2.7.0",
-    "tsx": "^4.19.1",
+    "concurrently": "^8.2.2",
+    "prisma": "^5.19.0",
     "typescript": "^5.4.5"
   }
 }
