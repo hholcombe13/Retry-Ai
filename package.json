@@ -1,0 +1,32 @@
+{
+  "name": "retry-ai",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Smart payment recovery app for Whop creators.",
+  "workspaces": [
+    "apps/web",
+    "apps/server"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace apps/web\" \"npm run dev --workspace apps/server\"",
+    "dev:web": "npm run dev --workspace apps/web",
+    "dev:server": "npm run dev --workspace apps/server",
+    "build": "npm run build --workspace apps/web && npm run build --workspace apps/server",
+    "lint": "npm run lint --workspace apps/web",
+    "prisma:generate": "npm run prisma:generate --workspace apps/server",
+    "prisma:migrate": "npm run prisma:migrate --workspace apps/server"
+  },
+  "keywords": [
+    "whop",
+    "payments",
+    "recovery",
+    "subscriptions"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "prisma": "^5.19.0",
+    "typescript": "^5.4.5"
+  }
+}
